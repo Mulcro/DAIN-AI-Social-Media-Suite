@@ -9,7 +9,7 @@ If not do so following [these](https://nodejs.org/en/download) instructions
 
 ### Step 1
 
-Follow [these](https://beachhacks-docs.dain.org/docs/getting-started/services/project-setup) to retrieve your API key
+Follow [these](https://beachhacks-docs.dain.org/docs/getting-started/services/project-setup) instructions to retrieve your API key
 
 
 ### Step 2
