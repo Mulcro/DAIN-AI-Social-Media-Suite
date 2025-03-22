@@ -7,6 +7,6 @@
   "environment": "development",
   "version": "1.0.0",
   "tunnel-base-url": "wss:///tunnel.dain-local.com",
-  "deployment-id": "codegen-6ebb6f2cc2fb47fe86d6ec46b74e8777",
+  "deployment-id": "codegen-f3b47fcb52f246128c7e5523024980a0",
   "service-id": "codegen-agent1300development"
 }

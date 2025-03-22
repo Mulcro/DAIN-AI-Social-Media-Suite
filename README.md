@@ -1,61 +1,38 @@
-# DAIN-AI-Social-Media-Suite
- A service that provides AI assisted capabilities to content creation
+# 📦 Project Title
 
-## How to run Locally
+> Project for California State University Long Beach
 
-***PREREQUISITE:*** Make sure you have node.js installed & create DAIN account [here](https://beachhacks-platform.dain.org/)
+---
 
-If not do so following [these](https://nodejs.org/en/download) instructions
+## 📝 Table of Contents
 
-### Step 1
+- [About](#about)
+- [Features](#features)
+- [Installation](#installation)
+- [License](#license)
 
- Follow [these](https://beachhacks-docs.dain.org/docs/getting-started/services/project-setup) instructions to retrieve your API key
+---
+
+## 📖 About
+
+Effortlessly convert long-form videos into engaging short-form content for TikTok, Instagram Reels, Twitter, and YouTube Shorts.
 
 
-### Step 2
 
- Create .env & .env.development files and copy your api key into DAIN_API_KEY field
- 
- ```bash
- touch .env .env.development
- ```
- 
- The structure of your .env should look like this
- ```sh
- DAIN_API_KEY= Your API Key
- ```
- 
- The structure of your .env.development should look like this
- ```sh
- DAIN_API_KEY= Your API Key
- PORT=
- ```
+---
 
-### Step 3
+## ✨ Features
 
- Install dependencies. Make sure you're in root directory
- 
- ```bash
- npm i
- ```
+- ✅ Edit videos to show only highlights
+- ✅ Post to Youtube Shorts, Tiktok and Instagram reels  
+- ✅ Add any analytics dashboard (coming soon)
 
-### Step 4
+---
 
- Deploy and run the app
- 
- - deploy
- ```bash
- dain build
- dain deploy
- ```
- - run
- ```bash
- dain dev
- ```
+## 🧰 Installation
 
- ***Note:*** Keep track of your tunnel url once you've ran the dev script
+Make sure you have **TBA+** installed.
 
-### Step 5
+1. [Set up DAINAI](./DAINAI.md)
 
- Follow [these](https://beachhacks-docs.dain.org/docs/getting-started/services/test-out) steps to connect your local instance to the DAIN assistant (See DAIN assistant [here](https://beachhacks-assistant.dain.org/))
-
+## ✨ License
