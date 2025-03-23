@@ -1,0 +1,2 @@
+python generateHighlights.py
+python editHighlights.py
