@@ -11,6 +11,7 @@ import {
   MapUIBuilder,
   LayoutUIBuilder,
 } from "@dainprotocol/utils";
+import { handleGetVideo } from "../handlers";
 
 const port = Number(process.env.PORT) || 2022;
 
@@ -22,6 +23,49 @@ const getWeatherEmoji = (temperature: number): string => {
   if (temperature <= 30) return "🌞";
   return "🔥";
 };
+
+const VideoSchema = z.object({
+    url: z.string().url(),                     // Must be a valid URL
+    // title: z.string().min(1),                    // A non-empty title
+    // description: z.string().optional(),          // Optional description
+    // duration: z.number().positive(),             // Duration in seconds (must be > 0)
+    // fileType: z.enum(["mp4", "mov", "avi"]),     // Allowed file types
+    // resolution: z.object({                       // Optional resolution info
+    //   width: z.number().positive(),
+    //   height: z.number().positive(),
+    // }).optional(),
+    // size: z.number().positive().optional()       // Optional file size in bytes
+  });
+
+const OutputSchema =z
+.object({
+  success: z
+    .boolean()
+    .describe("Indicates if the video was successfully received and stored"),
+  message: z
+    .string()
+    .describe("Additional details regarding the operation"),
+  videoId: z
+    .string()
+    .optional()
+    .describe("Identifier for the stored video (if applicable)"),
+  storedUrl: z
+    .string()
+    .url()
+    .optional()
+    .describe("Public URL of the stored video in the backend (if applicable)"),
+})
+.describe("Video input response")
+
+const getVideo: ToolConfig = {
+    id: "getVideo",
+    name: "Get Video",
+    description: "Gets video input from user and stores it in the backend to be modified",
+    input: VideoSchema,
+    output:  OutputSchema,
+    pricing: { pricePerUse: 0, currency: "USD" },
+    handler: handleGetVideo
+}
 
 const getWeatherConfig: ToolConfig = {
   id: "get-weather",
@@ -197,13 +241,14 @@ const dainService = defineDAINService({
       "A DAIN service for current weather and forecasts using Open-Meteo API",
     version: "1.0.0",
     author: "Your Name",
-    tags: ["weather", "forecast", "dain"],
+    tags: ["weather", "video","forecast", "dain"],
     logo: "https://cdn-icons-png.flaticon.com/512/252/252035.png",
   },
   exampleQueries: [
     {
       category: "Weather",
       queries: [
+        "Send this video to the service",
         "What is the weather in Tokyo?",
         "What is the weather in San Francisco?",
         "What is the weather in London?",
@@ -213,10 +258,10 @@ const dainService = defineDAINService({
   identity: {
     apiKey: process.env.DAIN_API_KEY,
   },
-  tools: [getWeatherConfig, getWeatherForecastConfig],
+  tools: [getVideo,getWeatherConfig, getWeatherForecastConfig],
 });
 
 dainService.startNode({ port: port }).then(({ address }) => {
-  console.log("Weather DAIN Service is running at :" + address().port);
+  console.log("Hello: " + address().port);
 });
 
