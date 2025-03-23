@@ -1,4 +1,4 @@
-# 📦 Project Title
+# 📦 DAIN AI SOCIAL MEDIA SUITE 🔥
 
 > Project for California State University Long Beach
 
