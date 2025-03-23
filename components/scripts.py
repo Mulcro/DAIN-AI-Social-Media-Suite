@@ -55,7 +55,7 @@ def get_transcript(input_video_path):
                     rec = r.recognize_google(chunk_audio)
 
                     # write the output to the raw transcript. 
-                    transcript.write(rec+" ")
+                    transcript.write(rec+"\n")
 
                     # write output with timestamp
                     stamp = (i+1)*n

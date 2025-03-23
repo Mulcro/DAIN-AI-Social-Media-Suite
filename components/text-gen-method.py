@@ -11,8 +11,8 @@ tokenizer.pad_token = tokenizer.eos_token
 transcript_path = os.path.join("components", "transcript.txt")
 transcript_open = open(transcript_path, "r")
 transcript = transcript_open.read()
-# prompt = 'Pick out 3 highlight worthy moments that would perform well on social media for short form content from the following video transcript: ' + transcript
-prompt = "Give 3 facts about California:"
+prompt = 'Pick out 3 highlight worthy moments that would perform well on social media for short form content from the following video transcript: ' + transcript
+# prompt = "Give 3 facts about California:" # test prompt
 prompt_input_ids = tokenizer.encode(prompt, return_tensors='pt')
 prompt_am = torch.ones(prompt_input_ids.shape, dtype=torch.long)  # Create attention mask
 
