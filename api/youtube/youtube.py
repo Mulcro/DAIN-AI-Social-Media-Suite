@@ -1,29 +1,46 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
+import json
 import argparse
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
 import googleapiclient.http
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
 
 # Define the OAuth scope required for uploading videos
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 
-def get_authenticated_service(client_secrets_file):
-    """
-    Creates an authenticated YouTube service using OAuth 2.0.
-    """
+def get_authenticated_service(client_secrets_file, credential_file="credentials.json"):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"  # Only for testing; remove in production.
-    
-    client_secrets_file = "client_secrets.json"
-    # Run the OAuth flow to get credentials.
-    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        client_secrets_file, SCOPES
-    )
-    credentials = flow.run_local_server(port=8080)    
 
+    creds = None
+    # Check if the credential file exists
+    if os.path.exists(credential_file):
+        with open(credential_file, "r") as token:
+            creds_data = json.load(token)
+        creds = Credentials.from_authorized_user_info(creds_data, SCOPES)
+        print("Loaded credentials from", credential_file)
+    
+    # If there are no valid credentials available, prompt the user to log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+            print("Refreshed credentials.")
+        else:
+            flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+                client_secrets_file, SCOPES
+            )
+            creds = flow.run_local_server(port=8081)
+            print("Obtained new credentials.")
+        # Save the credentials for future use
+        with open(credential_file, "w") as token:
+            token.write(creds.to_json())
+            print("Saved credentials to", credential_file)
+    
     # Build the YouTube service object.
-    return googleapiclient.discovery.build("youtube", "v3", credentials=credentials)
+    return googleapiclient.discovery.build("youtube", "v3", credentials=creds)
 
 def upload_video(youtube, file_path, title, description, category_id, privacy_status):
     """

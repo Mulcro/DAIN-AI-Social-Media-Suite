@@ -73,7 +73,7 @@ def main():
         
         # Optional: Wait a few seconds to ensure the container is processed (adjust if needed)
         print("Waiting for the media container to be processed...")
-        time.sleep(10)
+        time.sleep(30)
         
         # Step 2: Publish the container to post the Reel
         media_id = publish_reels_container(container_id)

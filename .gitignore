@@ -5,3 +5,7 @@ dist
 project.zip
 client_secrets.json
 .venv
+constants/highlights
+constants/testVids
+credentials.json
+.env.developlment

@@ -1,0 +1,1 @@
+export { handleGetVideo } from "./handleGetVideo";

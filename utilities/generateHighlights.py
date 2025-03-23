@@ -1,5 +1,8 @@
 import time
 import requests
+import os
+import sys
+import json
 
 def push_and_wait_for_highlights(api_key, file_url, highlight_search_phrases, render_clips=True, poll_interval=5, max_attempts=60):
     """
@@ -106,10 +109,11 @@ def download_video(url, output_path):
 
 if __name__ == "__main__":
     API_KEY = "82GhvkGPGZaoFN4u3m5magcMJ4u0e_3pph2-B6KZMro"
-    FILE_URL = "https://dainsocialmediasuite1.s3.us-east-2.amazonaws.com/videoplayback+(2).mp4"
+    FILE_URL = sys.argv[1]
     HIGHLIGHT_SEARCH_PHRASES = "Pick the shortest most educational parts"
     
     try:
+        print(FILE_URL)
         # Push the job and wait for it to finish
         final_job_data = push_and_wait_for_highlights(API_KEY, FILE_URL, HIGHLIGHT_SEARCH_PHRASES)
         print("Final Job Data:")
@@ -121,10 +125,22 @@ if __name__ == "__main__":
             print("Processed Highlight URLs:")
             for i, url in enumerate(highlight_urls, start=1):
                 print(f"Downloading highlight {i} from URL: {url}")
-                output_filename = f"../constants/highlights/highlight_{i}.mp4"
-                download_video(url, output_filename)
+                output_dir = os.path.join(os.path.dirname(__file__), "..", "constants", "highlights")
+                os.makedirs(output_dir, exist_ok=True)
+
+                output_filename = f"highlight_{i}.mp4"
+                output_path = os.path.join(output_dir, output_filename)
+
+                download_video(url, output_path)
                 print(f"Downloaded highlight {i} to {output_filename}\n")
+
+            # Print the highlight URLs as the final output JSON.
         else:
             print("No highlight URLs were found in the response.")
+        
+        result = {"highlight_urls": highlight_urls}
+        # Ensure only JSON is printed on the last line.
+        print(json.dumps(result))
+
     except Exception as e:
         print(f"An error occurred: {e}")
