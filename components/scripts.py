@@ -8,6 +8,7 @@ def get_transcript(input_video_path):
     # input_video_path = os.path.join("components", "input_video3.mp4")
     extracted_audio_path = os.path.join("components", "extracted_audio.wav")
     transcript_path = os.path.join("components", "transcript.txt")
+    timestamps_path = os.path.join("components", "timestamps.txt")
 
     if os.path.exists(input_video_path):
         video_clip = mp.VideoFileClip(input_video_path) # reading in video
@@ -17,7 +18,10 @@ def get_transcript(input_video_path):
 
     if os.path.exists(extracted_audio_path):
         audio = AudioSegment.from_wav(extracted_audio_path)
-        fh = open(transcript_path, "w+")
+
+        transcript = open(transcript_path, "w+")
+        timestamps = open(timestamps_path, "w+")
+        timestamps.write("time, text")
         n = 30*1000 # 30 second chunks
         chunks = [audio[i:i+n] for i in range(0, len(audio), n)]
         try:
@@ -29,7 +33,7 @@ def get_transcript(input_video_path):
         
         # looping through the chunks
         i=0 # counter for naming the audio chunks
-        for chunk in chunks:
+        for chunk in chunks[:5]:
             # export audio chunk and save it in  
             # the current directory. 
             print("saving chunk{0}.wav".format(i)) 
@@ -45,15 +49,17 @@ def get_transcript(input_video_path):
             r = sr.Recognizer() # creating a speech recognition object 
             # recognize the chunk 
             with sr.AudioFile(file) as source: 
-                # remove this if it is not working correctly. 
-                # r.adjust_for_ambient_noise(source) 
-                # audio_listened = r.listen(source) 
                 try: 
-                    # try converting it to text
+                    # converting it to text
                     chunk_audio = r.record(source)
                     rec = r.recognize_google(chunk_audio)
-                    # write the output to the file. 
-                    fh.write(rec+" ") 
+
+                    # write the output to the raw transcript. 
+                    transcript.write(rec+" ")
+
+                    # write output with timestamp
+                    stamp = (i+1)*n
+                    timestamps.write(str(stamp)+", "+rec+"\n")
         
                 # catch any errors. 
                 except sr.UnknownValueError: 
@@ -71,3 +77,5 @@ def get_transcript(input_video_path):
 
     os.rmdir("audio_chunks")
     return
+
+get_transcript(os.path.join("components", "input_video3.mp4"))
