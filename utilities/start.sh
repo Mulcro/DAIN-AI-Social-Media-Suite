@@ -1,1 +1,2 @@
-python3 generateHighlights.py
+python generateHighlights.py
+python editHighlights.py
